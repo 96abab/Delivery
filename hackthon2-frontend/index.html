@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <title>Document</title>
+  <style>
+  body {
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+  </style>
+
+</head>
+<body>
+<h1>택배 관리 시스템</h1>
+<form class="row g-3">
+  <div>
+    <div class="col-md-4">
+      <label for="validationDefault01" class="form-label">번호</label>
+      <input type="text" class="form-control is-valid" name="no"  id="d-no" value="" required>
+    </div>
+    <hr style="border: groove;">
+  </div>
+  <div class="col-md-4">
+    <label for="validationServer02" class="form-label">이름</label>
+    <input type="text" class="form-control is-valid" name="name" id="d-name" value="" required>
+  </div>
+  <div class="col-md-4">
+    <label for="validationServerUsername" class="form-label">전화번호</label>
+    <div class="input-group has-validation">
+      <input type="text" class="form-control is-invalid" name="tel" id="d-tel" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="validationServer03" class="form-label">주소</label>
+    <input type="text" class="form-control is-invalid" name="addr" id="d-addr" aria-describedby="validationServer03Feedback" required>
+  </div>
+  <div>
+    <div class="col-md-3">
+      <label for="validationServer04" class="form-label">결제방식</label>
+      <select class="form-select is-invalid" name="paym" id="d-paym" aria-describedby="validationServer04Feedback" required>
+        <option selected disabled value=""></option>
+        <option value="0">무료배송</option>
+        <option value="1">선불</option>
+        <option value="2">착불</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="validationServer04" class="form-label">배송 상태</label>
+      <select class="form-select is-invalid" name="status" id="d-status" aria-describedby="validationServer04Feedback" required>
+        <option selected disabled value=""></option>
+        <option value="0">배송준비</option>
+        <option value="1">발송중</option>
+        <option value="2">배송완료</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="validationServer03" class="form-label">배송 메세지</label>
+      <input type="text" class="form-control is-invalid" name="msg" id="d-msg" aria-describedby="validationServer03Feedback" required>
+    </div>
+  </div>
+  <div class="col-12">
+    
+    <button class="btn btn-secondary" type="submit" id="add-btn">등록</button>
+    <button class="btn btn-secondary" type="submit" id="list-btn">목록</button>
+  </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+document.querySelector('#add-btn').onclick = (e) => {
+  var no = document.querySelector('#d-no').value; 
+  var name = encodeURIComponent(document.querySelector('#d-name').value);
+  var tel = document.querySelector('#d-tel').value;
+  var addr = encodeURIComponent(document.querySelector('#d-addr').value);
+  var paym = document.querySelector('#d-paym').value;
+  var status = document.querySelector('#d-status').value;
+  var msg = encodeURIComponent(document.querySelector('#d-msg').value);
+
+fetch('http://localhost:8080/deliverys',{
+  method: 'POST',
+  headers: {
+      'Content-type': 'application/x-www-form-urlencoded'
+    },
+  body: `no=${no}&name=${name}&tel=${tel}&addr=${addr}&paym=${paym}&status=${status}&msg=${msg}`
+})
+  .then((response) => {return response.json();})
+  .then((obj) => {
+    location.href = "list.html";
+  })
+  .catch((err) => {
+    alert("서버 요청 오류!");
+    console.log(err);
+  })
+};
+
+document.querySelector('#list-btn').onclick = (e) => {
+  location.href = "list.html";
+};
+</script>
+</body>
+</html>
